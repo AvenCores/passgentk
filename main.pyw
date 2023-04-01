@@ -1,3 +1,4 @@
+from tkinter.messagebox import showerror
 import customtkinter
 import tkinter
 import random
@@ -21,7 +22,7 @@ class App(customtkinter.CTk):
         self.iconbitmap("pass.ico")
         self.resizable(False, False)
 
-        self.frame = customtkinter.CTkTextbox(self, width=250, height=100, border_width=2)
+        self.frame = customtkinter.CTkTextbox(self, width=250, height=100, text_color="#33FF33", border_width=2)
         self.frame.place(x=200, y=60, anchor=tkinter.CENTER)
 
         self.combox = customtkinter.CTkOptionMenu(self, values=["5", "10", "15", "20", "25"], button_hover_color="#7A848D", button_color="#3c3f41", fg_color="#565B5E", width=100, height=30)
@@ -47,16 +48,20 @@ class App(customtkinter.CTk):
         self.pin = customtkinter.CTkLabel(self, text="📌") 
         self.pin.place(x=100, y=180, anchor=tkinter.CENTER)
 
+
     def cleartextbox(self):
         self.frame.delete("1.0","end")
 
     def button_callback(self):
-        password = ""
-        chars = "+-/*!&$#?=@<>abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-        length = int(self.combox.get())
-        for i in range(length):
-            password += random.choice(chars)
-        self.frame.insert("1.0", password + "\n")
+        try:
+            password = ""
+            chars = "+-/*!&$#?=@<>abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+            length = int(self.combox.get())
+            for i in range(length):
+                password += random.choice(chars)
+            self.frame.insert("1.0", password + "\n")
+        except:
+            showerror(title="Error", message="You haven't chosen anything!")
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
