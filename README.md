@@ -4,7 +4,7 @@ ___
 ![menu-windows](https://i.imgur.com/HzXI6Wk.png)
 ___
 # 👻 Установка
-* **pip install -r requirements.txt**
+* **pip install -r requirements.txt** or **Password generator Setup.exe**
 ___
 # 💎 Запуск
 * **python main.pyw** or **main.exe**
