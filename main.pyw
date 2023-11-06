@@ -1,4 +1,4 @@
-from tkinter.messagebox import showerror
+from tkinter.messagebox import showerror, showinfo
 import customtkinter
 import tkinter
 import random
@@ -19,13 +19,17 @@ class App(customtkinter.CTk):
 
         self.geometry("400x200")
         self.title("Password generator")
-        self.iconbitmap("pass.ico")
+        try:
+            self.iconbitmap("pass.ico")
+        except:
+            pass
         self.resizable(False, False)
 
         self.frame = customtkinter.CTkTextbox(self, width=250, height=100, text_color="#33FF33", border_width=2)
         self.frame.place(x=200, y=60, anchor=tkinter.CENTER)
+        self.frame.configure(state="disabled")
 
-        self.combox = customtkinter.CTkOptionMenu(self, values=["5", "10", "15", "20", "25"], button_hover_color="#7A848D", button_color="#3c3f41", fg_color="#565B5E", width=100, height=30)
+        self.combox = customtkinter.CTkOptionMenu(self, values=["5", "10", "15", "20", "25", "30"], button_hover_color="#7A848D", button_color="#3c3f41", fg_color="#565B5E", width=100, height=30)
         self.combox.place(x=130, y=140, anchor=tkinter.CENTER)
         self.combox.set("Select")
         
@@ -34,6 +38,9 @@ class App(customtkinter.CTk):
 
         self.clearbutton = customtkinter.CTkButton(self, text="🧹", width=25, height=25, command=self.cleartextbox)
         self.clearbutton.place(x=200, y=140, anchor=tkinter.CENTER)
+        
+        self.addtxt = customtkinter.CTkButton(self, text="📃", width=25, height=25, command=self.savepasstotxt) 
+        self.addtxt.place(x=200, y=170, anchor=tkinter.CENTER)
 
         self.lampbutton = customtkinter.CTkOptionMenu(self, values=["Unpin", "Pin"], width=80, height=25, dynamic_resizing=False, command=self.togglecommand)
         self.lampbutton.place(x=45, y=180, anchor=tkinter.CENTER)
@@ -50,7 +57,16 @@ class App(customtkinter.CTk):
 
 
     def cleartextbox(self):
+        self.frame.configure(state="normal")
         self.frame.delete("1.0","end")
+        self.frame.configure(state="disabled")
+
+    def savepasstotxt(self):
+        datatxt = self.frame.get("0.0", "end")
+        file = open("passgen.txt", "w")
+        file.write(datatxt)
+        file.close()
+        showinfo(title="Successful!", message="All passwords you generated were successfully saved to the passgen.txt file")
 
     def button_callback(self):
         try:
@@ -59,7 +75,9 @@ class App(customtkinter.CTk):
             length = int(self.combox.get())
             for i in range(length):
                 password += random.choice(chars)
+            self.frame.configure(state="normal")
             self.frame.insert("1.0", password + "\n")
+            self.frame.configure(state="disabled")
         except:
             showerror(title="Error", message="You haven't chosen anything!")
 
